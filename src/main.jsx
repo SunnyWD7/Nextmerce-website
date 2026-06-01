@@ -18,27 +18,19 @@ import ProtectedRoute from "./Component/ProtectedRoute/ProtectedRoute.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<Layout />}>
+    <>
+      {/* Navbar/Footer WALA Layout - sirf logged in users */}
+      <Route path="/" element={<Layout />}>
+        <Route index element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="home" element={<ProtectedRoute><Home /></ProtectedRoute>} />
+        <Route path="contact" element={<ProtectedRoute><Contact /></ProtectedRoute>} />
+        <Route path="blog" element={<ProtectedRoute><Blog /></ProtectedRoute>} />
+      </Route>
 
-      
-      <Route index element={
-        <ProtectedRoute><Home /></ProtectedRoute>
-      } />
-      <Route path="home" element={
-        <ProtectedRoute><Home /></ProtectedRoute>
-      } />
-      <Route path="contact" element={
-        <ProtectedRoute><Contact /></ProtectedRoute>
-      } />
-      <Route path="blog" element={
-        <ProtectedRoute><Blog /></ProtectedRoute>
-      } />
-
-     
-      <Route path="signup" element={<Signup />} />
-      <Route path="signin" element={<SignIn />} />
-
-    </Route>
+      {/* Navbar/Footer NAHI - signin/signup ke liye */}
+      <Route path="/signin" element={<SignIn />} />
+      <Route path="/signup" element={<Signup />} />
+    </>
   )
 );
 
