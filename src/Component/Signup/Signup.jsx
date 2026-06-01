@@ -2,8 +2,63 @@ import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoGithub } from "react-icons/io";
 import { Link } from "react-router-dom";
+import { auth, } from "../FireBase/Firebase"
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { useState } from "react";
+
 
 function Signup() {
+
+  
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [rePassword, setRePassword] = useState("")
+
+  const createuser = async (e) => {
+  e.preventDefault()
+
+  // Validation
+  if (!firstName || !lastName) {
+    alert("Please enter First and Last Name!")
+    return
+  }
+
+  if (!email) {
+    alert("Please enter Email!")
+    return
+  }
+
+  if (password.length < 6) {
+    alert("Password must be at least 6 characters!")
+    return
+  }
+
+  if (password !== rePassword) {
+    alert("Passwords do not match!")
+    return
+  }
+
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    await updateProfile(userCredential.user, {
+      displayName: `${firstName} ${lastName}`
+    })
+    alert(`Account Created! Welcome ${firstName}!`)
+  } catch (error) {
+   
+    if (error.code === 'auth/email-already-in-use') {
+      alert("Email already exists! Try another email.")
+    } else if (error.code === 'auth/weak-password') {
+      alert("Password too weak! Use at least 6 characters.")
+    } else if (error.code === 'auth/invalid-email') {
+      alert("Invalid email format!")
+    } else {
+      alert(error.message)
+    }
+  }
+  }
   return (
     <section className="min-h-screen bg-[#F3F4F6] dark:bg-[#0F172A] pt-28 pb-10">
 
@@ -80,6 +135,8 @@ function Signup() {
 
                   <input
                     type="text"
+                    onChange={(e)=>setFirstName(e.target.value)}
+                    value={firstName}
                     placeholder="John"
                     className="w-full mt-2 py-3 px-5 rounded-full border border-gray-300 focus:border-[#2334B9] outline-none dark:bg-white"
                   />
@@ -92,6 +149,8 @@ function Signup() {
 
                   <input
                     type="text"
+                    onChange={(e)=>setLastName(e.target.value)}
+                    value={lastName}
                     placeholder="Doe"
                     className="w-full mt-2 py-3 px-5 rounded-full border border-gray-300 focus:border-[#2334B9] outline-none dark:bg-white"
                   />
@@ -107,6 +166,8 @@ function Signup() {
 
                 <input
                   type="email"
+                  onChange={(e)=>setEmail(e.target.value)}
+                  value={email}
                   placeholder="john@gmail.com"
                   className="w-full mt-2 py-3 px-5 rounded-full border border-gray-300 focus:border-[#2334B9] outline-none dark:bg-white"
                 />
@@ -120,6 +181,8 @@ function Signup() {
 
                 <input
                   type="password"
+                   onChange={(e)=>setPassword(e.target.value)}
+                  value={password}
                   placeholder="Enter your password"
                   className="w-full mt-2 py-3 px-5 rounded-full border border-gray-300 focus:border-[#2334B9] outline-none dark:bg-white"
                 />
@@ -133,6 +196,8 @@ function Signup() {
 
                 <input
                   type="password"
+                  onChange={(e)=>setRePassword(e.target.value)}
+                    value={rePassword}
                   placeholder="Re-type your password"
                   className="w-full mt-2 py-3 px-5 rounded-full border border-gray-300 focus:border-[#2334B9] outline-none dark:bg-white"
                 />
@@ -141,6 +206,7 @@ function Signup() {
               {/* Button */}
               <button
                 type="submit"
+                onClick={createuser}
                 className="w-full bg-[#1E2B5C] hover:bg-[#152048] text-white py-4 rounded-full text-lg font-semibold duration-300"
               >
                 Create Account

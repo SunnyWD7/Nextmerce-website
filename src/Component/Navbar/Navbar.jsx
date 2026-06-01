@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import logo from "../../assets/logo.svg";
 import logowhite from "../../assets/logowhite.svg";
@@ -9,16 +9,32 @@ import { CgShoppingBag } from "react-icons/cg";
 import { CiHeart, CiBrightnessDown, CiDark } from "react-icons/ci";
 import { HiOutlineBars3 } from "react-icons/hi2";
 
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 import useTheme from "../UseContext/UseContext";
-import Contact from "../Contact/Contact";
+import { auth } from "../FireBase/Firebase";
+import { signOut, onAuthStateChanged } from "firebase/auth";
 
 function Navbar() {
 
   const [Active, setActive] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   const { thememode, darkTheme, lightTheme } = useTheme();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser)
+    })
+    return () => unsubscribe()
+  }, [])
+
+  const logout = () => {
+    signOut(auth).then(() => {
+      navigate('/signin')
+    })
+  }
 
   return (
     <>
@@ -44,7 +60,6 @@ function Navbar() {
           <ul className="hidden md:flex gap-x-8 font-semibold">
 
             <li>
-
               <NavLink
                 to="/home"
                 className={({ isActive }) =>
@@ -57,11 +72,9 @@ function Navbar() {
               >
                 Home
               </NavLink>
-
             </li>
 
             <li>
-
               <NavLink
                 to="/shop"
                 className={({ isActive }) =>
@@ -74,11 +87,9 @@ function Navbar() {
               >
                 Shop
               </NavLink>
-
             </li>
 
             <li>
-
               <NavLink
                 to="/contact"
                 className={({ isActive }) =>
@@ -91,11 +102,9 @@ function Navbar() {
               >
                 Contact
               </NavLink>
-
             </li>
 
             <li>
-
               <NavLink
                 to="/blog"
                 className={({ isActive }) =>
@@ -108,7 +117,6 @@ function Navbar() {
               >
                 Blog
               </NavLink>
-
             </li>
 
           </ul>
@@ -119,20 +127,7 @@ function Navbar() {
             {/* account */}
             <div className="hidden md:flex items-center gap-x-3 cursor-pointer dark:text-white">
 
-              <GoPerson className="text-xl" />
-
-              <div>
-
-                <p className="text-[12px] hover:text-[#2334b9]">
-                  Account
-                </p>
-
-                <Link to="/signup">
-                <p className="text-[13px] font-semibold hover:text-[#2334b9]">
-                  Sign In / Register
-                </p></Link>
-
-              </div>
+              
 
             </div>
 
@@ -141,46 +136,54 @@ function Navbar() {
 
               {/* wishlist */}
               <div className="relative w-fit cursor-pointer">
-
                 <CiHeart className="text-2xl" />
-
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
-
                   0
-
                 </span>
-
               </div>
 
               {/* cart */}
               <div className="relative w-fit cursor-pointer">
-
                 <CgShoppingBag className="text-2xl" />
-
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs w-4 h-4 rounded-full flex items-center justify-center">
-
                   0
-
                 </span>
-
               </div>
 
               {/* dark mode */}
               {thememode === "dark" ? (
-
                 <CiBrightnessDown
                   onClick={lightTheme}
                   className="text-3xl cursor-pointer"
                 />
-
               ) : (
-
                 <CiDark
                   onClick={darkTheme}
                   className="text-3xl cursor-pointer"
                 />
-
               )}
+
+
+              <GoPerson className="text-xl" />
+              <div className="">
+
+                <p className="text-[12px] hover:text-[#2334b9]">
+                  Account
+                </p>
+
+                {user ? (
+                  <button onClick={logout} className="text-[13px] font-semibold text-red-500 hover:text-red-700">
+                    Logout
+                  </button>
+                ) : (
+                  <Link to="/signin">
+                    <p className="text-[13px] font-semibold hover:text-[#2334b9]">
+                      Sign In / Register
+                    </p>
+                  </Link>
+                )}
+
+              </div>
 
             </div>
 
@@ -188,19 +191,15 @@ function Navbar() {
             <div className="md:hidden flex items-center gap-x-5">
 
               {thememode === "dark" ? (
-
                 <CiBrightnessDown
                   onClick={lightTheme}
                   className="text-3xl dark:text-white"
                 />
-
               ) : (
-
                 <CiDark
                   onClick={darkTheme}
                   className="text-3xl dark:text-white"
                 />
-
               )}
 
               <HiOutlineBars3
@@ -229,13 +228,11 @@ function Navbar() {
           <div className="flex justify-between items-center">
 
             <a href="/home">
-
               {thememode === "dark" ? (
                 <img src={logowhite} alt="logo" />
               ) : (
                 <img src={logo} alt="logo" />
               )}
-
             </a>
 
             <img
@@ -248,51 +245,19 @@ function Navbar() {
           </div>
 
           {/* links */}
-          <NavLink
-            to="/home"
-            onClick={() => setActive(false)}
-            className={({ isActive }) =>
-              isActive
-                ? "text-[#2334b9]"
-                : "text-[#1C274C] dark:text-white hover:text-[#2334b9]"
-            }
-          >
+          <NavLink to="/home" onClick={() => setActive(false)} className={({ isActive }) => isActive ? "text-[#2334b9]" : "text-[#1C274C] dark:text-white hover:text-[#2334b9]"}>
             Home
           </NavLink>
 
-          <NavLink
-            to="/shop"
-            onClick={() => setActive(false)}
-            className={({ isActive }) =>
-              isActive
-                ? "text-[#2334b9]"
-                : "text-[#1C274C] dark:text-white hover:text-[#2334b9]"
-            }
-          >
+          <NavLink to="/shop" onClick={() => setActive(false)} className={({ isActive }) => isActive ? "text-[#2334b9]" : "text-[#1C274C] dark:text-white hover:text-[#2334b9]"}>
             Shop
           </NavLink>
 
-          <NavLink
-            to="/contact"
-            onClick={() => setActive(false)}
-            className={({ isActive }) =>
-              isActive
-                ? "text-[#2334b9]"
-                : "text-[#1C274C] dark:text-white hover:text-[#2334b9]"
-            }
-          >
+          <NavLink to="/contact" onClick={() => setActive(false)} className={({ isActive }) => isActive ? "text-[#2334b9]" : "text-[#1C274C] dark:text-white hover:text-[#2334b9]"}>
             Contact
           </NavLink>
 
-          <NavLink
-            to="/blog"
-            onClick={() => setActive(false)}
-            className={({ isActive }) =>
-              isActive
-                ? "text-[#2334b9]"
-                : "text-[#1C274C] dark:text-white hover:text-[#2334b9]"
-            }
-          >
+          <NavLink to="/blog" onClick={() => setActive(false)} className={({ isActive }) => isActive ? "text-[#2334b9]" : "text-[#1C274C] dark:text-white hover:text-[#2334b9]"}>
             Blog
           </NavLink>
 
@@ -306,21 +271,22 @@ function Navbar() {
 
             <GoPerson className="text-xl" />
 
-            <p className="text-[13px] font-semibold hover:text-[#2334b9]">
-                <Link to="/signup">Sign In / Register</Link>
-            </p>
+            {user ? (
+              <button onClick={logout} className="text-[13px] font-semibold text-red-500">
+                Logout
+              </button>
+            ) : (
+              <p className="text-[13px] font-semibold hover:text-[#2334b9]">
+                <Link to="/signin">Sign In / Register</Link>
+              </p>
+            )}
 
           </div>
 
           {/* wishlist */}
           <div className="flex gap-x-4 items-center cursor-pointer">
-
             <CiHeart className="text-xl" />
-
-            <span className="text-sm">
-              Wishlist
-            </span>
-
+            <span className="text-sm">Wishlist</span>
           </div>
 
         </div>

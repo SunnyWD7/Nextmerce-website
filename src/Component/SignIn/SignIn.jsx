@@ -1,9 +1,36 @@
-import React from 'react'
-import { Link } from "react-router-dom";
+import React, { useState } from 'react'
+import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoGithub } from "react-icons/io";
+import { auth } from "../FireBase/Firebase"
+import { signInWithEmailAndPassword } from 'firebase/auth'
+
 function SignIn() {
-   return (
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const navigate = useNavigate()
+
+  const signIn = (e) => {
+    e.preventDefault();
+    signInWithEmailAndPassword(auth, email, password)
+      .then((value) => {
+        alert("SignIn Success!")
+        navigate('/')
+      })
+      .catch((error) => {
+        if (error.code === 'auth/invalid-credential') {
+          alert("Invalid email or password!")
+        } else if (error.code === 'auth/user-not-found') {
+          alert("Email not registered!")
+        } else if (error.code === 'auth/wrong-password') {
+          alert("Wrong password!")
+        } else {
+          alert(error.message)
+        }
+      })
+  }
+
+  return (
     <section className="min-h-screen bg-[#F3F4F6] dark:bg-[#0F172A] pt-28 pb-10">
 
       {/* Full Width Heading */}
@@ -17,9 +44,7 @@ function SignIn() {
 
       {/* Form Section */}
       <div className="max-w-[1300px] mx-auto px-4 mt-10">
-
         <div className="flex justify-center">
-
           <div className="w-full md:w-[75%] lg:w-[50%] bg-white dark:bg-[#1E293B] rounded-2xl shadow-xl p-6 md:p-10">
 
             {/* Title */}
@@ -27,25 +52,26 @@ function SignIn() {
               <h2 className="text-3xl font-bold dark:text-white">
                 Welcome Back
               </h2>
-
               <p className="text-gray-500 dark:text-gray-300 mt-2">
                 Sign in to your account
               </p>
             </div>
 
             {/* Form */}
-            <form className="space-y-5 ">
+            <form className="space-y-5" onSubmit={signIn}>
 
               {/* Email */}
               <div>
                 <label className="font-medium dark:text-white">
                   Email *
                 </label>
-
                 <input
                   type="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  value={email}
                   placeholder="john@gmail.com"
                   className="w-full mt-2 py-3 px-5 rounded-full border border-gray-300 focus:border-[#2334B9] outline-none dark:bg-white"
+                  required
                 />
               </div>
 
@@ -54,11 +80,13 @@ function SignIn() {
                 <label className="font-medium dark:text-white">
                   Password *
                 </label>
-
                 <input
                   type="password"
+                  onChange={(e) => setPassword(e.target.value)}
+                  value={password}
                   placeholder="Enter your password"
                   className="w-full mt-2 py-3 px-5 rounded-full border border-gray-300 focus:border-[#2334B9] outline-none dark:bg-white"
+                  required
                 />
               </div>
 
@@ -85,17 +113,12 @@ function SignIn() {
             {/* OR */}
             <div className="flex items-center my-8">
               <div className="flex-1 h-[1px] bg-gray-300"></div>
-
-              <span className="px-4 font-semibold dark:text-white">
-                OR
-              </span>
-
+              <span className="px-4 font-semibold dark:text-white">OR</span>
               <div className="flex-1 h-[1px] bg-gray-300"></div>
             </div>
 
             {/* Social Login */}
             <div className="space-y-4">
-
               <button
                 type="button"
                 className="w-full flex items-center justify-center gap-3 bg-gray-100 hover:bg-gray-200 duration-300 py-4 rounded-full"
@@ -111,7 +134,6 @@ function SignIn() {
                 <IoLogoGithub className="text-2xl" />
                 <span>Sign In with Github</span>
               </button>
-
             </div>
 
             {/* Footer */}
@@ -128,9 +150,7 @@ function SignIn() {
             </div>
 
           </div>
-
         </div>
-
       </div>
 
     </section>
