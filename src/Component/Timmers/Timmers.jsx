@@ -22,29 +22,29 @@ function Timmers() {
     },[])
   return (
      <section className="w-full px-4 dark:bg-[#0f172a]">
-      <div className="offfer bg-[#d0e9f3] max-w-[1300px] mx-auto p-6 rounded-xl md:flex justify-around items-center dark:bg-[#1e293b]">
-        <div className="left py-3 dark:text-white flex flex-col gap-1">
-          <h4 className="text-lg font-semibold py-3 md:text-2xl text-[#3c58e0] dark:text-white ">Don’t Miss!!</h4>
-          <h2 className="text-lg font-bold py-2 md:text-4xl text-[#1c274c] dark:text-white ">Enhance Your Music Experience</h2>
+      <div className="offfer bg-[#d0e9f3] max-w-[1300px] mx-auto p-8 rounded-xl md:flex justify-around items-center dark:bg-[#1e293b] gap-24">
+        <div className="left  dark:text-white flex flex-col gap-1">
+          <h4 className="text-lg font-semibold  md:text-2xl text-[#3c58e0] dark:text-white ">Don’t Miss!!</h4>
+          <h2 className="text-lg font-bold py-1 md:text-xl lg:text-3xl text-[#1c274c] dark:text-white ">Enhance Your Music Experience</h2>
           <p className="text-md py-2 font-semibold">
             SOG Headphone
           </p>
-          <div className="timmer flex flex-wrap gap-5">
-            <div className="days flex flex-col">
-                <h4 className=' px-6 py-3 bg-white shadow-xl rounded-xl text-lg md:text-2xl font-bold dark:bg-[#1e293b]'>{days<10?"0"+days:days}</h4>
-                <p className='self-center text-lg'>Days</p>
+          <div className="timmer flex flex-wrap gap-6">
+            <div className="days flex flex-col gap-2">
+                <h4 className=' px-6 py-3 bg-white shadow-sm rounded-xl text-lg md:text-2xl font-semibold dark:bg-[#1e293b]'>{days<10?"0"+days:days}</h4>
+                <p className='self-center text-sm'>Days</p>
             </div>
-             <div className="Hours flex flex-col ">
-                <h4 className=' px-6 py-3 bg-white shadow-xl rounded-xl text-lg md:text-2xl font-bold dark:bg-[#1e293b]'>{hours<10?"0"+hours:hours}</h4>
-                <p className='self-center text-lg'>Hours</p>
+             <div className="Hours flex flex-col gap-2 ">
+                <h4 className=' px-6 py-3 bg-white shadow-sm rounded-xl text-lg md:text-2xl font-semibold dark:bg-[#1e293b]'>{hours<10?"0"+hours:hours}</h4>
+                <p className='self-center text-sm'>Hours</p>
             </div>
-             <div className="minutes flex flex-col">
-                <h4 className=' px-6 py-3 bg-white shadow-xl rounded-xl text-lg md:text-2xl font-bold dark:bg-[#1e293b]'>{mins<10?"0"+mins:mins}</h4>
-                <p className='self-center text-lg'>minutes</p>
+             <div className="minutes flex flex-col gap-2">
+                <h4 className=' px-6 py-3 bg-white shadow-sm rounded-xl text-lg md:text-2xl font-semibold dark:bg-[#1e293b]'>{mins<10?"0"+mins:mins}</h4>
+                <p className='self-center text-sm'>minutes</p>
             </div>
-             <div className="seconds flex flex-col ">
-                <h4 className='px-6 py-3 bg-white shadow-xl rounded-xl text-lg md:text-2xl font-bold dark:bg-[#1e293b]'>{secs<10?"0"+secs:secs}</h4>
-                <p className=' self-center text-lg'>Seconds</p>
+             <div className="seconds flex flex-col  gap-2">
+                <h4 className='px-6 py-3 bg-white shadow-sm rounded-xl text-lg md:text-2xl font-semibold dark:bg-[#1e293b]'>{secs<10?"0"+secs:secs}</h4>
+                <p className=' self-center text-sm'>Seconds</p>
             </div>
           </div>
           <button className="py-3 px-8 mt-4 text-white bg-[#3c50e0] hover:bg-[#3C68E5] rounded-3xl self-start">Checks it Out</button>

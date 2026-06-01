@@ -59,11 +59,11 @@ function Selers() {
         <div className="heading text-xl py-5 font-semibold">
           <h1>Best Sellers</h1>
         </div>
-        <div className="flex justify-between gap-4 flex-wrap">
+        <div className="flex justify-between gap-5 flex-wrap">
           {images.map((e, index) => (
             <div
               key={index}
-              className=" group seller-list relative p-6 overflow-hidden bg-[#F6F7FB] flex flex-col justify-center items-center rounded-2xl w-full sm:w-[48%] md:w-[32%] flex-wrap dark:bg-[#1e293b] "
+              className=" group seller-list relative p-6 overflow-hidden bg-[#F6F7FB] flex flex-col justify-center items-center rounded-2xl w-full sm:w-[48%] md:w-[48%] lg:w-[32%] flex-wrap dark:bg-[#1e293b] "
             >
               <div className="flex flex-col gap-2 font-semibold ">
                 <h4 className="text-md text-[#1c274c] dark:text-white">

@@ -102,8 +102,12 @@ function Fedback() {
             
 
             768: {
-              slidesPerView: 3,
+              slidesPerView: 1,
               spaceBetween: 30,
+            },
+            1024: {
+              slidesPerView: 3,
+              spaceBetween: 40,
             },
 
             
@@ -113,7 +117,7 @@ function Fedback() {
           {fedbacks.map((e, index) => (
             <SwiperSlide key={index}>
               <div className="group cursor-pointer">
-                <div className="w-[93vw] md:p-6 p-4 md:w-[28vw] bg-white flex flex-col gap-4 overflow-hidden dark:bg-[#1E293B] rounded-xl shadow-xl border border-gray-300">
+                <div className=" md:p-6 p-4  bg-white flex flex-col gap-4 overflow-hidden dark:bg-[#1E293B] rounded-xl shadow-xl border border-gray-300">
 
                   {/* Stars */}
                   <div>

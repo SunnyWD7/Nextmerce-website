@@ -77,7 +77,7 @@ function Arivals() {
 
       <div className="max-w-[1300px] mx-auto">
         <div className="Arrivals flex justify-between p-6 ">
-          <h1 className="text-xl ml-7 sm:text-2xl md:text-3xl font-semibold dark:text-white">New Arrivals</h1>
+          <h1 className="text-xl ml-7 sm:text-lg md:text-xl lg:2xl font-semibold dark:text-white">New Arrivals</h1>
           <button className="px-6 py-2 bg-[#f6f7fb] rounded-3xl font-semibold hover:bg-blue-950 hover:text-white dark:text-white dark:bg-[#3c68e5]">View All</button>
         </div>
 
@@ -88,13 +88,13 @@ function Arivals() {
             <div key={index} className="group cursor-pointer">
 
               {/* card */}
-              <div className="relative overflow-hidden w-full h-[35vh] sm:w-[42vw] md:w-[20vw] bg-[#f6f7fb] dark:bg-[#1E293B] rounded-2xl shadow-lg flex justify-center items-center">
+              <div className="relative overflow-hidden w-full h-[40vh] sm:w-[40vw] sm:h-[30vh] md:w-[45vw] md:h-[22vh] lg:w-[20vw] lg:h-[30vh]  bg-[#f6f7fb] dark:bg-[#1E293B] rounded-2xl shadow-sm flex justify-center items-center flex-wrap">
 
                 {/* image */}
                 <img
                   src={e.img}
                   alt={e.title}
-                  className="w-[70%]"
+                  className="w-[50%]"
                 />
 
                 {/* hover buttons */}
