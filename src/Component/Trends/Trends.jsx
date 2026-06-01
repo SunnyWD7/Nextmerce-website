@@ -3,10 +3,10 @@ function Trends() {
   return (
     <section className= "dark:bg-[#0f172a]">
       <div className="max-w-[1300px] mx-auto p-4">
-        <div className="trends p-6 sm:p-8 md:p-10 sm:w-[94vw] md:w-full bg-cover bg-no-repeat md:flex justify-between items-center rounded-2xl bg-[#0078FC] dark:bg-[#1e293b]"
+        <div className="trends p-6 sm:p-8 md:p-10 sm:w-[94vw] md:w-full bg-cover bg-no-repeat lg:flex justify-between items-center rounded-2xl bg-[#0078FC] dark:bg-[#1e293b]"
           
         >
-        <div className="text-white flex flex-col gap-3 s ">
+        <div className="text-white flex flex-col gap-3  ">
             <h1 className='text-xl sm:text-2xl md:text-3xl font-semibold'>Don't Miss Out Latest <br className='hidden sm:block'/> Trends & Offers</h1>
             <p className='text-md'>Register to receive news about the latest offers & discount codes</p>
         </div>
