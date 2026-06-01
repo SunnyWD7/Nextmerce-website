@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoGithub } from "react-icons/io";
 import { auth } from "../FireBase/Firebase"
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword,signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 
 function SignIn() {
   const [email, setEmail] = useState("")
@@ -28,6 +28,18 @@ function SignIn() {
           alert(error.message)
         }
       })
+
+      
+  }
+
+  const GooglesignIn = (e) => {
+    e.preventDefault()
+    const provider = new GoogleAuthProvider()
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        navigate('/')
+      })
+      .catch((error) => alert(error.message))
   }
 
   return (
@@ -103,7 +115,7 @@ function SignIn() {
               {/* Sign In Button */}
               <button
                 type="submit"
-                className="w-full bg-[#1E2B5C] hover:bg-[#152048] text-white py-4 rounded-full text-lg font-semibold duration-300"
+                className="w-full cursor-pointer bg-[#1E2B5C] hover:bg-[#152048] text-white py-4 rounded-full text-lg font-semibold duration-300"
               >
                 Sign In
               </button>
@@ -117,11 +129,12 @@ function SignIn() {
               <div className="flex-1 h-[1px] bg-gray-300"></div>
             </div>
 
-            {/* Social Login */}
-            <div className="space-y-4">
+         
+            <div className="space-y-4 ">
               <button
                 type="button"
-                className="w-full flex items-center justify-center gap-3 bg-gray-100 hover:bg-gray-200 duration-300 py-4 rounded-full"
+                onClick={GooglesignIn}
+                className="w-full cursor-pointer flex items-center justify-center gap-3 bg-gray-100 hover:bg-gray-200 duration-300 py-4 rounded-full"
               >
                 <FcGoogle className="text-2xl" />
                 <span>Sign In with Google</span>
@@ -129,14 +142,14 @@ function SignIn() {
 
               <button
                 type="button"
-                className="w-full flex items-center justify-center gap-3 bg-gray-100 hover:bg-gray-200 duration-300 py-4 rounded-full"
+                className="w-full flex cursor-pointer items-center justify-center gap-3 bg-gray-100 hover:bg-gray-200 duration-300 py-4 rounded-full"
               >
                 <IoLogoGithub className="text-2xl" />
                 <span>Sign In with Github</span>
               </button>
             </div>
 
-            {/* Footer */}
+        
             <div className="text-center mt-8">
               <p className="dark:text-white">
                 Don't have an account?{" "}

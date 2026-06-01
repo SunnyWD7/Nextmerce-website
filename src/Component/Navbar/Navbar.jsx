@@ -164,20 +164,20 @@ function Navbar() {
               )}
 
 
-              <GoPerson className="text-xl" />
+              <GoPerson className="text-xl cursor-pointer" />
               <div className="">
 
-                <p className="text-[12px] hover:text-[#2334b9]">
+                <p className="text-[12px] cursor-pointer hover:text-[#2334b9]">
                   Account
                 </p>
 
                 {user ? (
-                  <button onClick={logout} className="text-[13px] font-semibold text-red-500 hover:text-red-700">
+                  <button onClick={logout} className="text-[13px] cursor-pointer font-semibold text-red-500 hover:text-red-700">
                     Logout
                   </button>
                 ) : (
                   <Link to="/signin">
-                    <p className="text-[13px] font-semibold hover:text-[#2334b9]">
+                    <p className="text-[13px] font-semibold cursor-pointer hover:text-[#2334b9]">
                       Sign In / Register
                     </p>
                   </Link>

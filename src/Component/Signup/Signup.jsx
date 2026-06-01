@@ -1,15 +1,14 @@
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { IoLogoGithub } from "react-icons/io";
-import { Link } from "react-router-dom";
-import { auth, } from "../FireBase/Firebase"
-import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../FireBase/Firebase"
+import { createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 import { useState } from "react";
-
 
 function Signup() {
 
-  
+  const navigate = useNavigate()
   const [firstName, setFirstName] = useState("")
   const [lastName, setLastName] = useState("")
   const [email, setEmail] = useState("")
@@ -17,48 +16,57 @@ function Signup() {
   const [rePassword, setRePassword] = useState("")
 
   const createuser = async (e) => {
-  e.preventDefault()
+    e.preventDefault()
 
-  // Validation
-  if (!firstName || !lastName) {
-    alert("Please enter First and Last Name!")
-    return
-  }
+    if (!firstName || !lastName) {
+      alert("Please enter First and Last Name!")
+      return
+    }
 
-  if (!email) {
-    alert("Please enter Email!")
-    return
-  }
+    if (!email) {
+      alert("Please enter Email!")
+      return
+    }
 
-  if (password.length < 6) {
-    alert("Password must be at least 6 characters!")
-    return
-  }
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters!")
+      return
+    }
 
-  if (password !== rePassword) {
-    alert("Passwords do not match!")
-    return
-  }
+    if (password !== rePassword) {
+      alert("Passwords do not match!")
+      return
+    }
 
-  try {
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
-    await updateProfile(userCredential.user, {
-      displayName: `${firstName} ${lastName}`
-    })
-    alert(`Account Created! Welcome ${firstName}!`)
-  } catch (error) {
-   
-    if (error.code === 'auth/email-already-in-use') {
-      alert("Email already exists! Try another email.")
-    } else if (error.code === 'auth/weak-password') {
-      alert("Password too weak! Use at least 6 characters.")
-    } else if (error.code === 'auth/invalid-email') {
-      alert("Invalid email format!")
-    } else {
-      alert(error.message)
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      await updateProfile(userCredential.user, {
+        displayName: `${firstName} ${lastName}`
+      })
+      navigate('/')
+    } catch (error) {
+      if (error.code === 'auth/email-already-in-use') {
+        alert("Email already exists! Try another email.")
+      } else if (error.code === 'auth/weak-password') {
+        alert("Password too weak! Use at least 6 characters.")
+      } else if (error.code === 'auth/invalid-email') {
+        alert("Invalid email format!")
+      } else {
+        alert(error.message)
+      }
     }
   }
+
+  const signup = (e) => {
+    e.preventDefault()
+    const provider = new GoogleAuthProvider()
+    signInWithPopup(auth, provider)
+      .then((result) => {
+        navigate('/')
+      })
+      .catch((error) => alert(error.message))
   }
+
   return (
     <section className="min-h-screen bg-[#F3F4F6] dark:bg-[#0F172A] pt-28 pb-10">
 
@@ -84,7 +92,6 @@ function Signup() {
               <h2 className="text-3xl font-bold dark:text-white">
                 Create Account
               </h2>
-
               <p className="text-gray-500 dark:text-gray-300 mt-2">
                 Enter your details below
               </p>
@@ -95,7 +102,8 @@ function Signup() {
 
               <button
                 type="button"
-                className="w-full flex items-center justify-center gap-3 bg-gray-100 hover:bg-gray-200 duration-300 py-4 rounded-full"
+                onClick={signup}
+                className="w-full cursor-pointer flex items-center justify-center gap-3 bg-gray-100 hover:bg-gray-200 duration-300 py-4 rounded-full"
               >
                 <FcGoogle className="text-2xl" />
                 <span>Sign Up With Google</span>
@@ -103,7 +111,7 @@ function Signup() {
 
               <button
                 type="button"
-                className="w-full flex items-center justify-center gap-3 bg-gray-100 hover:bg-gray-200 duration-300 py-4 rounded-full"
+                className="w-full cursor-pointer flex items-center justify-center gap-3 bg-gray-100 hover:bg-gray-200 duration-300 py-4 rounded-full"
               >
                 <IoLogoGithub className="text-2xl" />
                 <span>Sign Up With Github</span>
@@ -114,59 +122,43 @@ function Signup() {
             {/* OR Divider */}
             <div className="flex items-center my-8">
               <div className="flex-1 h-[1px] bg-gray-300"></div>
-
-              <span className="px-4 text-gray-500 font-medium">
-                OR
-              </span>
-
+              <span className="px-4 text-gray-500 font-medium">OR</span>
               <div className="flex-1 h-[1px] bg-gray-300"></div>
             </div>
 
             {/* Form */}
-            <form className="space-y-5">
+            <form className="space-y-5" onSubmit={createuser}>
 
               {/* First + Last Name */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
                 <div>
-                  <label className="font-medium dark:text-white">
-                    First Name *
-                  </label>
-
+                  <label className="font-medium dark:text-white">First Name *</label>
                   <input
                     type="text"
-                    onChange={(e)=>setFirstName(e.target.value)}
+                    onChange={(e) => setFirstName(e.target.value)}
                     value={firstName}
                     placeholder="John"
                     className="w-full mt-2 py-3 px-5 rounded-full border border-gray-300 focus:border-[#2334B9] outline-none dark:bg-white"
                   />
                 </div>
-
                 <div>
-                  <label className="font-medium dark:text-white">
-                    Last Name *
-                  </label>
-
+                  <label className="font-medium dark:text-white">Last Name *</label>
                   <input
                     type="text"
-                    onChange={(e)=>setLastName(e.target.value)}
+                    onChange={(e) => setLastName(e.target.value)}
                     value={lastName}
                     placeholder="Doe"
                     className="w-full mt-2 py-3 px-5 rounded-full border border-gray-300 focus:border-[#2334B9] outline-none dark:bg-white"
                   />
                 </div>
-
               </div>
 
               {/* Email */}
               <div>
-                <label className="font-medium dark:text-white">
-                  Email *
-                </label>
-
+                <label className="font-medium dark:text-white">Email *</label>
                 <input
                   type="email"
-                  onChange={(e)=>setEmail(e.target.value)}
+                  onChange={(e) => setEmail(e.target.value)}
                   value={email}
                   placeholder="john@gmail.com"
                   className="w-full mt-2 py-3 px-5 rounded-full border border-gray-300 focus:border-[#2334B9] outline-none dark:bg-white"
@@ -175,13 +167,11 @@ function Signup() {
 
               {/* Password */}
               <div>
-                <label className="font-medium dark:text-white">
-                  Password *
-                </label>
-
+                <label className="font-medium dark:text-white">Password *</label>
                 <input
                   type="password"
-                   onChange={(e)=>setPassword(e.target.value)}
+                  autoComplete="new-password"
+                  onChange={(e) => setPassword(e.target.value)}
                   value={password}
                   placeholder="Enter your password"
                   className="w-full mt-2 py-3 px-5 rounded-full border border-gray-300 focus:border-[#2334B9] outline-none dark:bg-white"
@@ -190,14 +180,12 @@ function Signup() {
 
               {/* Confirm Password */}
               <div>
-                <label className="font-medium dark:text-white">
-                  Re-type Password *
-                </label>
-
+                <label className="font-medium dark:text-white">Re-type Password *</label>
                 <input
                   type="password"
-                  onChange={(e)=>setRePassword(e.target.value)}
-                    value={rePassword}
+                  autoComplete="new-password"
+                  onChange={(e) => setRePassword(e.target.value)}
+                  value={rePassword}
                   placeholder="Re-type your password"
                   className="w-full mt-2 py-3 px-5 rounded-full border border-gray-300 focus:border-[#2334B9] outline-none dark:bg-white"
                 />
@@ -206,8 +194,7 @@ function Signup() {
               {/* Button */}
               <button
                 type="submit"
-                onClick={createuser}
-                className="w-full bg-[#1E2B5C] hover:bg-[#152048] text-white py-4 rounded-full text-lg font-semibold duration-300"
+                className="w-full cursor-pointer bg-[#1E2B5C] hover:bg-[#152048] text-white py-4 rounded-full text-lg font-semibold duration-300"
               >
                 Create Account
               </button>
@@ -218,10 +205,7 @@ function Signup() {
             <div className="text-center mt-8">
               <p className="dark:text-white">
                 Already have an account?{" "}
-                <Link
-                  to="/signin"
-                  className="text-[#2334B9] font-medium hover:underline"
-                >
+                <Link to="/signin" className="text-[#2334B9] font-medium hover:underline">
                   Sign In Now!
                 </Link>
               </p>
