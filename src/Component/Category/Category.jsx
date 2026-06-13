@@ -88,6 +88,7 @@ function Category() {
 
         {/* swiper */}
         <Swiper
+npm run dev
 
           slidesPerView={2}
           spaceBetween={20}
